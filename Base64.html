@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image to Base64</title>
+</head>
+<body>
+<h2>HTML5 Canvas approach</h2>
+
+    <div>Data URL:<textarea id="img"></textarea></div>
+    <div><button id ="dwnl">download</button>
+<script type="text/javascript">
+        function toDataURL(src, callback) {
+            var image = new Image();
+            image.crossOrigin = 'Anonymous';
+         
+            image.onload = function() {
+                var canvas = document.createElement('canvas');
+                var context = canvas.getContext('2d');
+                canvas.height = this.naturalHeight;
+                canvas.width = this.naturalWidth;
+                context.drawImage(this, 0, 0);
+                var dataURL = canvas.toDataURL('image/jpeg');
+                callback(dataURL);
+            };
+
+            image.src = src;
+        }
+
+        toDataURL('file:///sdcard/Pictures/1594536292866.jpg', function(dataURL) {
+            // do something with dataURL
+            document.getElementById('img').innerHTML = dataURL;
+        });
+        function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        }
+        // Start file download.
+        document.getElementById("dwn").addEventListener("click", function(){
+        // Generate download of hello.txt file with some content
+        var text = document.getElementById("img").value;
+        var filename = "hello.txt";
+        download(filename, text);
+        }, false);
+
+    </script>
+
+</body>
+</html>
+ 
